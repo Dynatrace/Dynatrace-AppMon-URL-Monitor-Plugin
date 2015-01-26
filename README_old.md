@@ -1,63 +1,30 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>URL Monitor Plugin</title>
-
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
     <meta content="Scroll Wiki Publisher" name="generator"/>
-
     <link type="text/css" rel="stylesheet" href="css/blueprint/liquid.css" media="screen, projection"/>
     <link type="text/css" rel="stylesheet" href="css/blueprint/print.css" media="print"/>
-    <!--[if lt IE 8]><link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection"/><![endif]-->
-
     <link type="text/css" rel="stylesheet" href="css/content-style.css" media="screen, projection, print"/>
     <link type="text/css" rel="stylesheet" href="css/screen.css" media="screen, projection"/>
     <link type="text/css" rel="stylesheet" href="css/print.css" media="print"/>
 </head>
 <body>
-    <div class="container" style="min-width: 760px;">
-        <div class="header block">
-            <div class="header-left column span-6">
-                
-            </div>
-            <div class="column span-18 header-right last">
-                <h4>URL Monitor Plugin</h4>
-            </div>
-        </div>
-
-        <div class="block">
-            <div class="toc column span-6 prepend-top">
-                <h3>Table of Contents
-                                        <span class="small">(<a href="URL_Monitor_Plugin.html">Start</a>)</span>
-                                    </h3>
-                
-<ul class="toc">
-</ul>
-
-            </div>
-            <div id="103907986" class="content column span-18 last">
                 <h1>URL Monitor Plugin</h1>
     <div class="section-2"  id="103907986_URLMonitorPlugin-Overview"  >
         <h2>Overview</h2>
-    
     <p>
     </p>
     <div class="confbox admonition admonition-info">
-        
     <p>
 Since dynaTrace 4.2 the URL Monitor Plugin that shipped with the product is no longer officially supported. Continued development of this plugin will be done through the Community    </p>
     </div>
-    
     <p>
 This plugin extends the <a href="https://community/display/DOCDT55/URL+Monitor">dynaTrace URL Monitor</a> plugin and allows specifying a timeout for connectionsIt's based on a post from the <a href="https://community/pages/viewpage.action?pageId=102269277">dynaTrace Forum</a>.    </p>
     </div>
-    
     <div class="section-2"  id="103907986_URLMonitorPlugin-PluginDetails"  >
         <h2>Plugin Details</h2>
-    
     <div class="tablewrap">
         <table>
 <thead class=" "></thead><tfoot class=" "></tfoot><tbody class=" ">    <tr>
@@ -252,10 +219,8 @@ Average network throughput achieved during retrieval of HTTP response.    </p>
 </tbody>        </table>
             </div>
     </div>
-    
     <div class="section-2"  id="103907986_URLMonitorPlugin-Configuration"  >
         <h2>Configuration</h2>
-    
     <p>
 Please see the dynaTrace documentation (    </p>
     <p>
@@ -297,21 +262,16 @@ the connection timeout in ms    </p>
 </tbody>        </table>
             </div>
     </div>
-    
     <div class="section-2"  id="103907986_URLMonitorPlugin-Installation"  >
         <h2>Installation</h2>
-    
     <p>
 Import the Plugin into the dynaTrace Server via the dynaTrace Server Settings menu -&gt; Plugins -&gt; Install Plugin. For details how to do this please refer to the dynaTrace documentation:    </p>
     <p>
 <a href="https://community/display/DOCDT50/Plugin+Management">Plugin Management</a>    </p>
     </div>
-    
             </div>
         </div>
-
         <div class="footer">
-            Created with <a href="http://k15t.com/display/en/Scroll-Wiki-HTML-Exporter-for-Confluence-Overview">Scroll Wiki HTML Exporter for Confluence</a>.
         </div>
     </div>
 </body>
