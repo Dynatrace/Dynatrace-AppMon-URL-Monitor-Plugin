@@ -137,17 +137,7 @@ public class UrlMonitor implements Monitor, Migrator {
 		config = readConfig(env);
 
 		SSLSocketFactory dumbSslSocketFactory = new SSLSocketFactory(new DumbTrustStrategy(), new AllowAllHostnameVerifier());
-		//changed by Rick B -- richard.boyd@dynatrace.com
-		//Scheme https = new Scheme(PROTOCOL_HTTPS_IGNORECERT, config.url.getPort(), dumbSslSocketFactory);
-		Scheme https;
-		if(config.url.getPort()==-1) {
-			https = new Scheme(PROTOCOL_HTTPS_IGNORECERT, config.url.getDefaultPort(), dumbSslSocketFactory);
-		} else {
-			https = new Scheme(PROTOCOL_HTTPS_IGNORECERT, config.url.getPort(), dumbSslSocketFactory);
-		}
-
-		
-		
+		Scheme https = new Scheme(PROTOCOL_HTTPS_IGNORECERT, config.url.getPort(), dumbSslSocketFactory);
 		connectionManager.getSchemeRegistry().register(https);
 		return status;
 	}
@@ -401,15 +391,7 @@ public class UrlMonitor implements Monitor, Migrator {
     	}
 		String path = fixPath(env.getConfigString(CONFIG_PATH));
 		config.ignorecert = env.getConfigBoolean(CONFIG_IGNORE_CERTIFICATE);
-		//changed by Rick B -- richard.boyd@dynatrace.com
-		//config.url = new URL(protocol, env.getHost().getAddress(), port, path);
-		
-		if(port==80||port==443){
-			config.url = new URL(protocol, env.getHost().getAddress(), path);
-		} else {
-			config.url = new URL(protocol, env.getHost().getAddress(), port, path);
-		}
-		
+		config.url = new URL(protocol, env.getHost().getAddress(), port, path);
 		config.method = env.getConfigString(CONFIG_METHOD) == null ? "GET" : env.getConfigString(CONFIG_METHOD).toUpperCase();
 		config.postData = env.getConfigString(CONFIG_POST_DATA);
 		config.httpVersion = env.getConfigString(CONFIG_HTTP_VERSION);
