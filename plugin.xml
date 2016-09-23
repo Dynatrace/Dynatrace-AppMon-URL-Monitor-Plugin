@@ -3,11 +3,11 @@
 <plugin>
   <extension point="com.dynatrace.diagnostics.pdk.pluginconfig" id="com.dynatrace.diagnostics.plugins.UrlPlugin" name="URL Monitor">
     <information>
-      <description value="%PLUGIN_CONFIG_DESCRIPTION" />
-      <license value="compuwareBSD.txt" />
-      <supportlevel value="unsupported" />
+      <description value="The Plugin can be used to check the availability of URLs" />
+      <license value="dynatraceBSD.txt" />
+      <supportlevel value="supported" />
       <category value="Remote" />
-      <displayname value="%PLUGIN_CONFIG_NAME" />
+      <displayname value="UrlMonitor" />
     </information>
     <configuration>
       <property key="url" label="URL" type="url" description="This property is deprecated and thus hidden. Old description: The full URL to connect to in the format protocol://host:port/path Protocol has to be http or https, the port can be omitted for the respective default port." default="http://localhost/">
@@ -21,17 +21,17 @@
           <item value="https" />
         </list>
       </property>
-      <property key="httpPort" label="Port" type="long" description="Enter the port number of the webserver. The default HTTP port is 80." default="80">
+      <property key="httpPort" label="Port" type="long" description="Enter the port number of the webserver. The default HTTP port is 80. Pass -1 to ignore the port." default="80">
         <visibility>
           <rule key="protocol" value="http" />
         </visibility>
       </property>
-      <property key="httpsPort" label="Port" type="long" description="Enter the port number of the webserver. The default port for HTTP over SSL is 443." default="443">
+      <property key="httpsPort" label="Port" type="long" description="Enter the port number of the webserver. The default port for HTTP over SSL is 443. Pass -1 to ignore the port." default="443">
         <visibility>
           <rule key="protocol" value="https" />
         </visibility>
       </property>
-      <property key="path" label="Path" type="string" description="Enter the path to the webpage to be monitored. Example: /index.html" default="/" />
+      <property key="path" label="Path" type="string" description="Enter the path to the webpage to be monitored. Example: /index.html" default="/" multiline="false" />
       <property key="method" label="Method" type="list" description="Specify the type of the HTTP request. GET: retrieve the page content, HEAD: retrieve HTTP headers only, POST: send data with the request and retrive the page content (e.g. used for HTML forms)" default="GET">
         <list>
           <item value="GET" />
@@ -39,7 +39,7 @@
           <item value="POST" />
         </list>
       </property>
-      <property key="postData" label="POST Data" type="string" description="The data which will be sent with the POST request." default="">
+      <property key="postData" label="POST Data" type="string" description="The data which will be sent with the POST request." default="" multiline="false">
         <visibility>
           <rule key="method" value="POST" />
         </visibility>
@@ -50,10 +50,8 @@
           <item value="1.0" />
         </list>
       </property>
-      <property key="userAgent" label="User-Agent" type="string" description="The user agent string identifies the HTTP client and is sent with every request." default="dynaTrace/4" />
+      <property key="userAgent" label="User-Agent" type="string" description="The user agent string identifies the HTTP client and is sent with every request." default="dynaTrace/6" multiline="false" />
       <property key="maxRedirects" label="Max. redirects" type="long" description="If a value of 1 or greater is specified, the URL Monitor will follow HTTP redirect codes (301-303, 307) to retrieve the webpage. This setting has no effect if the method POST is used." default="3" />
-      <property key="maxSocketTimeout" label="Socket Timeout" type="long" description="The default socket timeout in milliseconds which is the timeout for waiting for data. A timeout value of zero is interpreted as an infinite timeout." default="0" />
-      <property key="maxConnectionTimeout" label="Connection Timeout" type="long" description="The timeout until a connection is established. A value of zero means the timeout is not used." default="0" />
       <property key="matchContent" label="Match content" type="list" description="If enabled, the specified string will be searched in the retrieved page." default="Disabled">
         <list>
           <item value="Disabled" />
@@ -61,11 +59,15 @@
           <item value="Error if match" />
           <item value="Expected size in bytes" />
         </list>
-      </property>
-      <property key="searchString" label="Search string" type="string" description="Enter a case-sensitive string to search for in the retrieved webpage. If 'Success if match' is configured and the webpage contains the string, the measure will yield 1, otherwise 0." default="">
         <visibility>
-          <rule key="matchContent" value="Success if match" />
+          <rule key="method" value="POST" />
+          <rule key="method" value="GET" />
+        </visibility>
+      </property>
+      <property key="searchString" label="Search string" type="string" description="Enter a case-sensitive string to search for in the retrieved webpage. If 'Success if match' is configured and the webpage contains the string, the measure will yield 1, otherwise 0." default="" multiline="false">
+        <visibility>
           <rule key="matchContent" value="Error if match" />
+          <rule key="matchContent" value="Success if match" />
         </visibility>
       </property>
       <property key="compareBytes" label="Bytes" type="long" description="Enter the number of bytes expected for the response." default="0">
@@ -73,19 +75,34 @@
           <rule key="matchContent" value="Expected size in bytes" />
         </visibility>
       </property>
-      <property key="serverAuth" label="Server authorization" type="boolean" description="If the URL specified requires a name and password for access, server authorization needs to be enabled." default="false" />
-      <property key="serverUsername" label="Server username" type="string" description="The username that is used for authorization with the server. For NTLM authentication use a DOMAIN\\username notation." default="">
+      <property key="serverAuth" label="Server authorization" type="list" description="Specify the authentication type to be used." default="Disabled">
+        <list>
+          <item value="Disabled" />
+          <item value="Basic" />
+          <item value="NTLM" />
+        </list>
+      </property>
+      <property key="serverUsername" label="Server username" type="string" description="The username that is used for authorization with the server. For NTLM authentication use a DOMAIN\username notation." default="" multiline="false">
         <visibility>
-          <rule key="serverAuth" value="true" />
+          <rule key="serverAuth" value="Basic" />
+          <rule key="serverAuth" value="NTLM" />
         </visibility>
       </property>
       <property key="serverPassword" label="Server password" type="password" description="The password for the username." default="">
         <visibility>
-          <rule key="serverAuth" value="true" />
+          <rule key="serverAuth" value="Basic" />
+          <rule key="serverAuth" value="NTLM" />
         </visibility>
       </property>
+      <property key="serverAuthPreemptive" label="Preemptive server authentication" type="boolean" description="If enabled, preemptive authentication will be used to connect to the URL" default="false">
+        <visibility>
+          <rule key="serverAuth" value="Basic" />
+        </visibility>
+      </property>
+      <property key="socketTimeout" label="Socket Timeout" type="long" description="The timeout for socket connection in miliseconds. Default is 60000 (1 minute), setting this to 0 will disable the timeout." default="60000" />
+      <property key="connectionTimeout" label="Connection Timeout" type="long" description="The timeout for connection acquisition in miliseconds. Default is 60000 (1 minute), setting this to 0 will disable the timeout." default="60000" />
       <property key="useProxy" label="Proxy" type="boolean" description="If enabled, the configured HTTP proxy server will be used to access the URL." default="false" />
-      <property key="proxyHost" label="Proxy host" type="string" description="The hostname of the HTTP proxy server." default="">
+      <property key="proxyHost" label="Proxy host" type="string" description="The hostname of the HTTP proxy server." default="" multiline="false">
         <visibility>
           <rule key="useProxy" value="true" />
         </visibility>
@@ -100,7 +117,7 @@
           <rule key="useProxy" value="true" />
         </visibility>
       </property>
-      <property key="proxyUsername" label="Proxy username" type="string" description="The username that is used for authorization with the HTTP proxy server." default="">
+      <property key="proxyUsername" label="Proxy username" type="string" description="The username that is used for authorization with the HTTP proxy server." default="" multiline="false">
         <visibility>
           <rule key="proxyAuth" value="true" />
         </visibility>
@@ -110,18 +127,29 @@
           <rule key="proxyAuth" value="true" />
         </visibility>
       </property>
+      <property key="proxyAuthPreemptive" label="Preemptive proxy authentication" type="boolean" description="If enabled, preemptive authentication will be used authenticate against the proxy." default="false">
+        <visibility>
+          <rule key="proxyAuth" value="true" />
+        </visibility>
+      </property>
       <property key="structuredUrl" label="Structured URL" type="boolean" description="This property is deprecated and thus hidden. Old description: Decide between string based URL configuration to paste an URL from the address bar of a browser, and structurized URL configuration to specify host, path etc. separately." default="false">
         <visibility>
           <rule key="alwaysHidden" value="true" />
         </visibility>
       </property>
-      <property key="dtTagging" label="dynaTrace Tagging" type="boolean" description="Enable dynaTrace tagging." default="true" />
-      <property key="dtTimerName" label="timer name" type="string" description="Identify this webrequest through a unique timer name. The timer name will be sent with each web request as a dynaTrace header field value." default="">
+      <property key="dtTagging" label="Dynatrace Tagging" type="boolean" description="Enable Dynatrace tagging." default="true" />
+      <property key="dtTimerName" label="timer name" type="string" description="Identify this webrequest through a unique timer name. The timer name will be sent with each web request as a Dynatrace header field value." default="" multiline="false">
         <visibility>
           <rule key="dtTagging" value="true" />
         </visibility>
       </property>
       <property key="ignoreCertificate" label="Disable certificate validation" type="boolean" description="Enable to allow connections via SSL even if the certificate on the target host is invalid or self-signed." default="false" />
+      <property key="useCustomHeader" label="Use Custom Header" type="boolean" description="If enabled, Custom Header Tags are added to the request" default="false" />
+      <property key="customHeaderList" label="Custom Header List" type="string" description="Please enter your custom header tag and value here. For multiple entries seperate each header tag with comma. For example Header: Value, Header2: Value2" default="header1: value1" multiline="false">
+        <visibility>
+          <rule key="useCustomHeader" value="true" />
+        </visibility>
+      </property>
     </configuration>
   </extension>
   <extension id="com.dynatrace.diagnostics.plugins.UrlPluginMonitor" name="URL Monitor" point="com.dynatrace.diagnostics.pdk.monitor">
@@ -141,15 +169,14 @@
       <metric defaultrate="none" description="%METRIC_HTTP_STATUS_CODE_DESCRIPTION" displayname="%METRIC_HTTP_STATUS_CODE_LABEL" hidedisplayaggregation="sum count" name="HttpStatusCode" unit="number" />
       <metric defaultrate="none" description="%METRIC_CONNECTION_CLOSE_DELAY_DESCRIPTION" displayname="%METRIC_CONNECTION_CLOSE_DELAY_LABEL" hidedisplayaggregation="sum count" name="ConnectionCloseDelay" unit="ms" />
       <metric defaultrate="none" description="%METRIC_CONTENT_VERIFIED_DESCRIPTION" displayname="%METRIC_CONTENT_VERIFIED_LABEL" hidedisplayaggregation="sum count" name="ContentVerified" unit="number" />
-      <metric defaultrate="none" description="%METRIC_SOCKET_TIMEOUT_DESCRIPTION" displayname="%METRIC_SOCKET_TIMEOUT_LABEL" hidedisplayaggregation="sum count" name="SocketTimedOut" unit="number" />
-      <metric defaultrate="none" description="%METRIC_CONNECTION_TIMEOUT_DESCRIPTION" displayname="%METRIC_CONNECTION_TIMEOUT_LABEL" hidedisplayaggregation="sum count" name="ConnectionTimedOut" unit="number" />
+      <metric defaultrate="none" description="%METRIC_SOCKET_TIMEDOUT_DESCRIPTION" displayname="%METRIC_SOCKET_TIMEDOUT_LABEL" hidedisplayaggregation="sum count" name="SocketTimedOut" unit="number" />
+      <metric defaultrate="none" description="%METRIC_CONNECTION_TIMEDOUT_DESCRIPTION" displayname="%METRIC_CONNECTION_TIMEDOUT_LABEL" hidedisplayaggregation="sum count" name="ConnectionTimedOut" unit="number" />
     </metricgroup>
     <information>
       <description value="%METRICGROUP_URL_MONITOR_DESCRIPTION" />
     </information>
   </extension>
   <extension id="com.dynatrace.diagnostics.plugins.UrlPlugin.migrator" point="com.dynatrace.diagnostics.pdk.migrator">
-    <migration classname="url.UrlMonitor" configid="com.dynatrace.diagnostics.plugins.UrlPlugin" maxSourceVersion="4.0.0.2562" minSourceVersion="1.0.0.0" />
+    <migration classname="com.dynatrace.diagnostics.plugin.urlmonitor.Config" configid="com.dynatrace.diagnostics.plugins.UrlPlugin" maxSourceVersion="6.2.0.9999" minSourceVersion="1.0.0.0" />
   </extension>
 </plugin>
-
