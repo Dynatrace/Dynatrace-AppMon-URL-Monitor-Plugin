@@ -3,6 +3,7 @@ package com.dynatrace.diagnostics.plugin.urlmonitor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -138,14 +139,12 @@ public class UrlMonitor implements Monitor {
 
 		CloseableDynaTraceHttpResponse response = null;
 		try {
-			log.info("Executing method: " + config.method + ", URI: " + config.url + ", with PostData: " +
-					(config.postData != null));
+			//log.info("Executing method: " + config.method + ", URI: " + config.url + ", with PostData: " + (config.postData != null));
 
 			// connect
 			measureCollector.startMeasurement();
 			if (config.method == RequestType.POST && config.postData != null) {
-				response = httpClient.executeBigRequest(config.method, config.url, null, config.postData,
-						ContentTypeAndEncoding.TEXT_PLAIN_UTF8);
+				response = httpClient.executeBigRequest(config.method, config.url, null, config.postData, ContentTypeAndEncoding.TEXT_PLAIN_UTF8);
 			} else {
 				response = httpClient.executeBigRequest(config.method, config.url, null);
 			}
@@ -261,6 +260,7 @@ public class UrlMonitor implements Monitor {
 			messageBuffer.append("verifying of content failed, because we didn't got one!\n");
 		}
 		else {
+			
 			boolean found = buf.toString().contains(config.searchString);
 			if (config.matchContent == MatchContent.successIfMatch) {
 				measureCollector.setVerified(found);
@@ -293,8 +293,8 @@ public class UrlMonitor implements Monitor {
 					domain = config.serverUsername.substring(0, idx);
 				}
 			}
-			httpClient.setNTLMUserCredentials(config.url.getHost(), config.url.getPort(), user, config.serverPassword, domain,
-					java.net.InetAddress.getLocalHost().getHostName());
+			
+			httpClient.setNTLMUserCredentials(config.url.getHost(), config.url.getPort(), user, config.serverPassword, domain, java.net.InetAddress.getLocalHost().getHostName());
 		}
 	}
 

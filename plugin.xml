@@ -5,7 +5,7 @@
     <information>
       <description value="The Plugin can be used to check the availability of URLs" />
       <license value="dynatraceBSD.txt" />
-      <supportlevel value="supported" />
+      <supportlevel value="unsupported" />
       <category value="Remote" />
       <displayname value="UrlMonitor" />
     </information>
@@ -15,6 +15,7 @@
           <rule key="alwaysHidden" value="true" />
         </visibility>
       </property>
+      <property key="host" label="Host" type="string" description="Host address: eg. dynatrace.com" default="dynatrace.com" multiline="false" />
       <property key="protocol" label="Protocol" type="list" description="Select the protocol that will be used to establish the connection. If 'https' is selected, a secure connection will be made using SSL." default="http">
         <list>
           <item value="http" />
