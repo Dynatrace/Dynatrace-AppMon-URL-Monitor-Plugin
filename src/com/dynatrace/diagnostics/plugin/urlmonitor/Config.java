@@ -121,6 +121,10 @@ public class Config implements Migrator {
 
 	Config(MonitorEnvironment env) throws MalformedURLException {
 		String host = env.getConfigString(CONFIG_HOST);
+		
+		// Legacy protection - If a host hasn't been explictly passed, fall back to environment host.
+		if (host == null || host.isEmpty()) host = env.getHost().getAddress();
+				
 		String protocol = env.getConfigString(CONFIG_PROTOCOL);
 		int port;
 		if (protocol != null && protocol.contains("https")) {
