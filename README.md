@@ -1,4 +1,4 @@
-##URL Monitor Plugin
+## URL Monitor Plugin
 
 This plugin is only needed for Dynatrace AppMon Versions < 6.3.
 
