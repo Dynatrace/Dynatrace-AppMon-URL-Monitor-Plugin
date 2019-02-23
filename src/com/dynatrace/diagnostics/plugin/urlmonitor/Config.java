@@ -31,6 +31,7 @@ public class Config implements Migrator {
 	private static final Logger log = Logger.getLogger(Config.class.getName());
 
 	// configuration constants
+	protected static final String CONFIG_HOST = "host";
 	protected static final String CONFIG_PROTOCOL = "protocol";
 	protected static final String CONFIG_PATH = "path";
 	protected static final String CONFIG_HTTP_PORT = "httpPort";
@@ -74,6 +75,8 @@ public class Config implements Migrator {
 	
 	
 
+	//String host;
+	//String protocol;
 	URL url;
 	// String method;
 	RequestType method;
@@ -117,6 +120,11 @@ public class Config implements Migrator {
 	}
 
 	Config(MonitorEnvironment env) throws MalformedURLException {
+		String host = env.getConfigString(CONFIG_HOST);
+		
+		// Legacy protection - If a host hasn't been explictly passed, fall back to environment host.
+		if (host == null || host.isEmpty()) host = env.getHost().getAddress();
+				
 		String protocol = env.getConfigString(CONFIG_PROTOCOL);
 		int port;
 		if (protocol != null && protocol.contains("https")) {
@@ -128,7 +136,10 @@ public class Config implements Migrator {
 		}
 		String path = fixPath(env.getConfigString(CONFIG_PATH));
 		ignorecert = env.getConfigBoolean(CONFIG_IGNORE_CERTIFICATE);
-		url = new URL(protocol, env.getHost().getAddress(), port, path);
+
+		
+		url = new URL(protocol, host, port, path);
+		//url = new URL(protocol, env.getHost().getAddress(), port, path);
 
 		String methodString = env.getConfigString(CONFIG_METHOD);
 		if ("POST".equalsIgnoreCase(methodString)) {
